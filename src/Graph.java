@@ -32,6 +32,7 @@ public class Graph {
 
     public void printGraph(){
         for(Map.Entry<Integer, List<Edge>> entry: adjList.entrySet()){
+            System.out.print("Vertex " + entry.getKey() + " is connected to: ");
             for (Edge edge : entry.getValue()) {
                 System.out.print(edge.getDestination().getId() + " ");
             }
