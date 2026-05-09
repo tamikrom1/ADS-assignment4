@@ -19,5 +19,23 @@ public class Graph {
         }
     }
 
+    public void addEdge(int from, int to){
+        Vertex source = vertices.computeIfAbsent(from, Vertex::new);
+        Vertex destination = vertices.computeIfAbsent(to, Vertex::new);
 
+        addVertex(source);
+        addVertex(destination);
+
+        Edge edge = new Edge(source,destination);
+        adjList.get(from).add(edge);
+    }
+
+    public void printGraph(){
+        for(Map.Entry<Integer, List<Edge>> entry: adjList.entrySet()){
+            for (Edge edge : entry.getValue()) {
+                System.out.print(edge.getDestination().getId() + " ");
+            }
+            System.out.println();
+        }
+    }
 }
