@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Graph {
     private final Map<Integer,Vertex> vertices;
@@ -37,6 +34,58 @@ public class Graph {
                 System.out.print(edge.getDestination().getId() + " ");
             }
             System.out.println();
+        }
+    }
+
+    public void bfs(int start){
+        if(!vertices.containsKey(start)){
+            System.out.println("Start vertex: " + start + "not found");
+            return;
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+
+        queue.add(start);
+        visited.add(start);
+
+        while(!queue.isEmpty()){
+            int current = queue.poll();
+            System.out.println("Current: " + current);
+
+            List<Edge> edges = adjList.getOrDefault(current, Collections.emptyList());
+            for(Edge edge : edges){
+                int neighbor = edge.getDestination().getId();
+                if(!visited.contains(neighbor)){
+                    visited.add(neighbor);
+                    queue.add(neighbor);
+                }
+            }
+        }
+        System.out.println();
+    }
+
+    public void dfs(int start){
+        if(!vertices.containsKey(start)){
+            System.out.println("Start vertex: " + start + "not found");
+            return;
+        }
+
+        Set<Integer> visited = new HashSet<>();
+        dfsHelper(start,visited);
+        System.out.println();
+    }
+
+    private void dfsHelper(int current, Set<Integer> visited){
+        visited.add(current);
+        System.out.println("Current: " + current);
+
+        List<Edge> edges = adjList.getOrDefault(current,Collections.emptyList());
+        for(Edge edge: edges){
+            int neighbor = edge.getDestination().getId();
+            if(!visited.contains(neighbor)){
+                dfsHelper(neighbor,visited);
+            }
         }
     }
 }
