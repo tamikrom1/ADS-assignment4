@@ -88,4 +88,15 @@ public class Graph {
             }
         }
     }
+
+    public List<Integer> getNeighbors(int vertexId) {
+        List<Integer> neighbors = new ArrayList<>();
+        List<Edge> edges = adjList.get(vertexId);
+        if (edges != null) {
+            for (Edge edge : edges) {
+                neighbors.add(edge.getDestination().getId());
+            }
+        }
+        return neighbors;
+    }
 }
