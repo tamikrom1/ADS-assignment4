@@ -72,6 +72,38 @@ The system is built entirely on Object-Oriented Principles to model abstract con
 ### Performance Results Table
 <img width="472" height="103" alt="image" src="https://github.com/user-attachments/assets/ae99e66c-7376-4872-ade2-3040a60aca3b" />
 
+## Bonus Task: Dijkstra's Algorithm (Shortest Path)
+**Overview**
+
+Dijkstra's Algorithm finds the shortest path from a single source vertex to all other vertices in a weighted graph. Unlike BFS (which counts hops), Dijkstra accounts for edge weights, making it suitable for real-world scenarios like road networks or network routing where connections have varying costs.
+
+**Changes to Existing Classes**
+1) Edge.java
+A weight field was added along with a new constructor Edge(Vertex source, Vertex destination, int weight). The original two-argument constructor is preserved and now delegates to the weighted one with a default weight of 1, keeping all existing BFS/DFS code fully compatible.
+2) Graph.java
+Two additions were made:
+
+ * addEdge(int from, int to, int weight) — new overload that creates a weighted edge. The original addEdge(int from, int to) calls this with weight = 1, so backward compatibility is maintained.
+ * dijkstra(int start) — implements the algorithm using only arrays and simple loops (no priority queue).
+
+**Algorithm: Step-by-Step**
+
+1. Initialize a dist[] array with Integer.MAX_VALUE (infinity) for all vertices; set dist[start] = 0.
+2. Initialize a visited[] boolean array, all false.
+3. Repeat V times:
+
+ * Pick the unvisited vertex u with the smallest dist[u] (linear scan).
+ * Mark u as visited.
+ * For each outgoing edge u → v with weight w: if dist[u] + w < dist[v], update dist[v].
+
+
+4. After all iterations, dist[v] holds the shortest distance from start to every vertex v. Any vertex still at Integer.MAX_VALUE is unreachable.
+
+**Time Complexity O(V^2)**
+
+**Space Complexity O(V)**
+
+<img width="355" height="368" alt="image" src="https://github.com/user-attachments/assets/ead1336b-1fe8-470f-8f30-abdad9ddbecd" />
 
 
 ## F. Reflection Section
