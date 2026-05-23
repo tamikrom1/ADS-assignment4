@@ -1,12 +1,17 @@
 public class Edge {
     private final Vertex source;
     private final Vertex destination;
+    private final int weight;
 
-    public Edge(Vertex source, Vertex destination){
+    public Edge(Vertex source, Vertex destination, int weight){
         this.source = source;
         this.destination = destination;
+        this.weight = weight;
     }
 
+    public Edge(Vertex source, Vertex destination){
+        this(source,destination,1);
+    }
     public Vertex getDestination() {
         return destination;
     }
@@ -15,8 +20,12 @@ public class Edge {
         return source;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
     @Override
     public String toString() {
-        return source.getId() + " -> " + destination.getId();
+        return source.getId() + " -(" + weight + ")-> " + destination.getId();
     }
 }

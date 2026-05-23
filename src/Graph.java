@@ -16,22 +16,24 @@ public class Graph {
         }
     }
 
-    public void addEdge(int from, int to){
-        Vertex source = vertices.computeIfAbsent(from, Vertex::new);
-        Vertex destination = vertices.computeIfAbsent(to, Vertex::new);
+    public void addEdge(int from, int to) {
+        addEdge(from, to, 1);
+    }
 
-        addVertex(source);
-        addVertex(destination);
+    // New weighted addEdge
+    public void addEdge(int from, int to, int weight) {
+        Vertex source = vertices.computeIfAbsent(from, id -> { adjList.put(id, new ArrayList<>()); return new Vertex(id); });
+        Vertex destination = vertices.computeIfAbsent(to, id -> { adjList.put(id, new ArrayList<>()); return new Vertex(id); });
 
-        Edge edge = new Edge(source,destination);
+        Edge edge = new Edge(source, destination, weight);
         adjList.get(from).add(edge);
     }
 
-    public void printGraph(){
-        for(Map.Entry<Integer, List<Edge>> entry: adjList.entrySet()){
+    public void printGraph() {
+        for (Map.Entry<Integer, List<Edge>> entry : adjList.entrySet()) {
             System.out.print("Vertex " + entry.getKey() + " is connected to: ");
             for (Edge edge : entry.getValue()) {
-                System.out.print(edge.getDestination().getId() + " ");
+                System.out.print(edge.getDestination().getId() + "(w=" + edge.getWeight() + ") ");
             }
             System.out.println();
         }
@@ -87,6 +89,65 @@ public class Graph {
                 dfsHelper(neighbor,visited);
             }
         }
+    }
+
+    public void dijkstra(int start) {
+        if (!vertices.containsKey(start)) {
+            System.out.println("Start vertex " + start + " not found.");
+            return;
+        }
+
+        List<Integer> ids = new ArrayList<>(vertices.keySet());
+        Collections.sort(ids);
+        int n = ids.size();
+
+        Map<Integer, Integer> idToIndex = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            idToIndex.put(ids.get(i), i);
+        }
+
+        int startIdx = idToIndex.get(start);
+
+        int[] dist = new int[n];
+        boolean[] visited = new boolean[n];
+
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[startIdx] = 0;
+
+        for (int iter = 0; iter < n; iter++) {
+            int uIdx = -1;
+            for (int i = 0; i < n; i++) {
+                if (!visited[i] && (uIdx == -1 || dist[i] < dist[uIdx])) {
+                    uIdx = i;
+                }
+            }
+
+            if (uIdx == -1 || dist[uIdx] == Integer.MAX_VALUE) break;
+
+            visited[uIdx] = true;
+            int uId = ids.get(uIdx);
+
+            List<Edge> edges = adjList.getOrDefault(uId, Collections.emptyList());
+            for (Edge edge : edges) {
+                int vId  = edge.getDestination().getId();
+                int vIdx = idToIndex.get(vId);
+                if (!visited[vIdx] && dist[uIdx] != Integer.MAX_VALUE) {
+                    int newDist = dist[uIdx] + edge.getWeight();
+                    if (newDist < dist[vIdx]) {
+                        dist[vIdx] = newDist;
+                    }
+                }
+            }
+        }
+
+        // Print results
+        System.out.println("Dijkstra shortest distances from vertex " + start + ":");
+        for (int i = 0; i < n; i++) {
+            int vertexId = ids.get(i);
+            String distStr = (dist[i] == Integer.MAX_VALUE) ? "Unreachable" : String.valueOf(dist[i]);
+            System.out.println("  Vertex " + start + " -> Vertex " + vertexId + " : " + distStr);
+        }
+        System.out.println();
     }
 
     public List<Integer> getNeighbors(int vertexId) {

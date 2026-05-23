@@ -10,21 +10,24 @@ public class Experiment {
     private long largeBfsTime, largeDfsTime;
 
     public void runMultipleTests(){
-        smallGraph = generateRandomGraph(10, 15);   //
-        mediumGraph = generateRandomGraph(30, 60);  //
-        largeGraph = generateRandomGraph(100, 250); //
+        smallGraph = generateRandomGraph(10, 15);
+        mediumGraph = generateRandomGraph(30, 60);
+        largeGraph = generateRandomGraph(100, 250);
+
+        smallGraph.printGraph();
 
         System.out.println("\nSmall Graph Traversal Orders");
         long start = System.nanoTime();
         System.out.print("BFS Order: ");
         smallGraph.bfs(1);
-        smallBfsTime = System.nanoTime() - start; //
+        smallBfsTime = System.nanoTime() - start;
 
         start = System.nanoTime();
         System.out.print("DFS Order: ");
         smallGraph.dfs(1);
         smallDfsTime = System.nanoTime() - start;
 
+        mediumGraph.printGraph();
         System.out.println("\nMedium Graph Traversal Orders");
         start = System.nanoTime();
         System.out.print("BFS Order: ");
@@ -36,6 +39,7 @@ public class Experiment {
         mediumGraph.dfs(1);
         mediumDfsTime = System.nanoTime() - start;
 
+        largeGraph.printGraph();
         System.out.println("\nLarge Graph Traversal Orders");
         start = System.nanoTime();
         System.out.print("BFS Order: ");
